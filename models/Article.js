@@ -6,8 +6,6 @@ var Schema = mongoose.Schema;
 var ArticleSchema = new Schema({
   headline: {
     title: String,
-    // unique: true
-  },
   summary: String,
   imgUrl: String,
   storyUrl: String,
@@ -21,6 +19,7 @@ var ArticleSchema = new Schema({
       ref: "Note"
     }
   ]
+}
 });
 
 // This creates our model from the above schema, using mongoose's model method
