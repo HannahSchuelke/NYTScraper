@@ -5,7 +5,8 @@ var express = require("express");
 var morgan = require("morgan");
 var mongoose = require("mongoose");
 var expressHand = require("express-handlebars");
-const dotenv = require('dotenv'); //!!!!
+// const dotenv = require('dotenv'); //!!!!
+require('dotenv').config();
 // Requiring Article model
 // var Article = require('./models');
 // Requiring the `User` model for accessing the `users` collection
@@ -37,9 +38,10 @@ app.set('view engine', 'handlebars');
 
 
 // Connect to the Mongo DB 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/redditdb"
-mongoose.connect(MONGODB_URI);
-// mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/redditdb";
+// var MONGODB_URI = process.env.MONGODB_URI || ;
+// mongoose.connect();
+mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
 
 // CONNECTION FOR MONGO DB !!! (format)
 // Database configuration with mongoose
