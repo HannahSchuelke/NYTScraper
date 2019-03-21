@@ -1,29 +1,12 @@
-// Setting up mongoDB connection
-// var mongodb= require('mongodb');
-// var MongoClient= mongodb.MongoClient;
-// var URL = 'mongodb://127.0.0.1:27017/mainDB';
-
-// MongoClient.connect(URL,function(err,database){
-//   if(!err){
-//     db=database;
-//   }
-//   else{
-//     //do something
-//   }
-// });
-
-
-
 
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      $("#Article").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
     }
   });
-  
   
   // Whenever someone clicks a p tag
   $(document).on("click", "p", function() {

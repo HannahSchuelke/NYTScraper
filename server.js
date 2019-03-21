@@ -7,9 +7,10 @@ var mongoose = require("mongoose");
 var expressHand = require("express-handlebars");
 const dotenv = require('dotenv'); //!!!!
 // Requiring Article model
-var Article = require('./models');
+// var Article = require('./models');
 // Requiring the `User` model for accessing the `users` collection
-var Note = require("./models"); //!!!
+// var Note = require("./models"); //!!!
+var db = require("./models");
 
 // Sets up the Express App & link middleware
 var app = express();
@@ -42,22 +43,22 @@ mongoose.connect(MONGODB_URI);
 
 // CONNECTION FOR MONGO DB !!! (format)
 // Database configuration with mongoose
-var databaseUri = "mongodb://localhost/redditdb";
+// var databaseUri = "mongodb://localhost/redditdb";
 
-if (process.env.MONGODB_URI) {
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect(databaseUri);
-}
-var db = mongoose.connection;
+// if (process.env.MONGODB_URI) {
+//   mongoose.connect(process.env.MONGODB_URI);
+// } else {
+//   mongoose.connect(databaseUri);
+// }
+// var db = mongoose.connection;
 
-db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
-});
+// db.on("error", function(error) {
+//   console.log("Mongoose Error: ", error);
+// });
 
-db.once("open", function() {
-  console.log("Mongoose connection sucessful.");
-});
+// db.once("open", function() {
+//   console.log("Mongoose connection sucessful.");
+// });
 
 
 // ROUTES TO SCRAPE
@@ -87,7 +88,7 @@ app.get("/scrape", function(req, res) {
     });
   //CREATE NEW ARTICLE
     // Create a new Article using the `result` object built from scraping
-        Article.create(res)
+        db.Article.create(res)
           .then(function(redditdb) {
             // View the added result in the console
             console.log(redditdb);
@@ -106,7 +107,7 @@ app.get("/scrape", function(req, res) {
   app.get("/articles", function(req, res) {
     // TODO: Finish the route so it grabs all of the articles
     Article.find({})
-    .then( articles => res.json(articles))
+    .then(Article => res.json(Article))
   });
   
   // Route for grabbing a specific Article by id, populate it with it's note
@@ -118,7 +119,7 @@ app.get("/scrape", function(req, res) {
     // then responds with the article with the note included
     Article.findOne({_id: req.params.id})
     .populate("note")
-    .then( article => res.json(article))
+    .then( Article => res.json(Article))
   }); 
   
   // Route for saving/updating an Article's associated Note
