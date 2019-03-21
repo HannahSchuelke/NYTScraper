@@ -5,10 +5,11 @@ var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var expressHand = require("express-handlebars");
+const dotenv = require('dotenv'); //!!!!
 // Requiring Article model
-var Article = require("./models");
+var Article = require('./models/articles'); //!!!
 // Requiring the `User` model for accessing the `users` collection
-var Note = require("./models");
+var Note = require("./models"); //!!!
 
 // Sets up the Express App
 var app = express();
@@ -31,10 +32,34 @@ app.use(express.json());
 app.engine('handlebars', expressHand({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
 
-// ROUTE TO SCRAPE
+
+// Connect to the Mongo DB 
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/redditdb"
+mongoose.connect(MONGODB_URI);
+// mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
+
+// CONNECTION FOR MONGO DB !!! (format)
+// Database configuration with mongoose
+// var databaseUri = "mongodb://localhost/redditdb";
+
+// if (process.env.MONGODB_URI) {
+//   mongoose.connect(process.env.MONGODB_URI);
+// } else {
+//   mongoose.connect(databaseUri);
+// }
+// var db = mongoose.connection;
+
+// db.on("error", function(error) {
+//   console.log("Mongoose Error: ", error);
+// });
+
+// db.once("open", function() {
+//   console.log("Mongoose connection sucessful.");
+// });
+
+
+// ROUTES TO SCRAPE
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with axios
     axios.get("https://old.reddit.com/r/webdev/").then(function(response) {
@@ -56,11 +81,12 @@ app.get("/scrape", function(req, res) {
         });
       });
       // Log the results once you've looped through each of the elements found with cheerio
-      console.log(results);
+      console.log(results); //go to my node terminal server
+    //   res.send(results);
     });
-  //CREATE NEW ARTICLE ????
+  //CREATE NEW ARTICLE
     // Create a new Article using the `result` object built from scraping
-        db.Article.create(result)
+        Article.create(res)
           .then(function(redditdb) {
             // View the added result in the console
             console.log(redditdb);
@@ -72,13 +98,13 @@ app.get("/scrape", function(req, res) {
     // Send a message to the client
       res.send("Scrape Complete");
       });
-     
+   
 
   
   // ROUTE FOR GETTING ALL ARTICLES FROM THE DB
   app.get("/articles", function(req, res) {
     // TODO: Finish the route so it grabs all of the articles
-    db.Article.find({})
+    Article.find({})
     .then( articles => res.json(articles))
   });
   
@@ -89,7 +115,7 @@ app.get("/scrape", function(req, res) {
     // Finish the route so it finds one article using the req.params.id,
     // and run the populate method with "note",
     // then responds with the article with the note included
-    db.Article.findOne({_id: req.params.id})
+    Article.findOne({_id: req.params.id})
     .populate("note")
     .then( article => res.json(article))
   }); 
@@ -101,7 +127,7 @@ app.get("/scrape", function(req, res) {
     // save the new note that gets posted to the Notes collection
     // then find an article from the req.params.id
     // and update it's "note" property with the _id of the new note
-    db.Note.create(req.body)
+    Note.create(req.body)
     .then( dbNote => db.Article.findOneAndUpdate(
     {_id:req.params.id},
     {$set:{note:dbNote.id}}

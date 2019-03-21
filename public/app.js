@@ -1,3 +1,20 @@
+// Setting up mongoDB connection
+// var mongodb= require('mongodb');
+// var MongoClient= mongodb.MongoClient;
+// var URL = 'mongodb://127.0.0.1:27017/mainDB';
+
+// MongoClient.connect(URL,function(err,database){
+//   if(!err){
+//     db=database;
+//   }
+//   else{
+//     //do something
+//   }
+// });
+
+
+
+
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
     // For each one
@@ -69,5 +86,4 @@ $.getJSON("/articles", function(data) {
     // Also, remove the values entered in the input and textarea for note entry
     $("#titleinput").val("");
     $("#bodyinput").val("");
-  });
-  
+  });  
