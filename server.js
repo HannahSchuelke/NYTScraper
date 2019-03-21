@@ -2,22 +2,23 @@
 var cheerio = require("cheerio"); 
 var axios = require("axios"); 
 var express = require("express");
-var logger = require("morgan");
+var morgan = require("morgan");
 var mongoose = require("mongoose");
 var expressHand = require("express-handlebars");
 const dotenv = require('dotenv'); //!!!!
 // Requiring Article model
-var Article = require('./models/articles'); //!!!
+var Article = require('./models');
 // Requiring the `User` model for accessing the `users` collection
 var Note = require("./models"); //!!!
 
-// Sets up the Express App
+// Sets up the Express App & link middleware
 var app = express();
+app.use(morgan('combined'))
 var PORT = process.env.PORT || 3000;
 
 // CONFIGURE MIDDLEWARE
 // Use morgan logger for logging requests
-app.use(logger("dev"));
+app.use(morgan("dev"));
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -41,22 +42,22 @@ mongoose.connect(MONGODB_URI);
 
 // CONNECTION FOR MONGO DB !!! (format)
 // Database configuration with mongoose
-// var databaseUri = "mongodb://localhost/redditdb";
+var databaseUri = "mongodb://localhost/redditdb";
 
-// if (process.env.MONGODB_URI) {
-//   mongoose.connect(process.env.MONGODB_URI);
-// } else {
-//   mongoose.connect(databaseUri);
-// }
-// var db = mongoose.connection;
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(databaseUri);
+}
+var db = mongoose.connection;
 
-// db.on("error", function(error) {
-//   console.log("Mongoose Error: ", error);
-// });
+db.on("error", function(error) {
+  console.log("Mongoose Error: ", error);
+});
 
-// db.once("open", function() {
-//   console.log("Mongoose connection sucessful.");
-// });
+db.once("open", function() {
+  console.log("Mongoose connection sucessful.");
+});
 
 
 // ROUTES TO SCRAPE
