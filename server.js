@@ -4,11 +4,11 @@ var axios = require("axios");
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var exphbs = require("express-handlebars");
+var expressHand = require("express-handlebars");
 // Requiring Article model
-var Article = require("./models/Article.js");
+var Article = require("./models");
 // Requiring the `User` model for accessing the `users` collection
-var User = require("./userModel.js");
+var Note = require("./models");
 
 // Sets up the Express App
 var app = express();
@@ -69,9 +69,10 @@ app.get("/scrape", function(req, res) {
             // If an error occurred, log it
             console.log(err);
           });
-      });
-      // Send a message to the client
+    // Send a message to the client
       res.send("Scrape Complete");
+      });
+     
 
   
   // ROUTE FOR GETTING ALL ARTICLES FROM THE DB
