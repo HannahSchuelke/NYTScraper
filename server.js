@@ -40,7 +40,7 @@ app.set('view engine', 'handlebars');
 
 // CONNECTION FOR MONGO DB !!! (format)
 // var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/redditdb";
-// var MONGODB_URI = process.env.MONGODB_URI || ;
+var MONGODB_URI = process.env.MONGODB_URI || 
 // mongoose.connect();
 mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
 
@@ -77,6 +77,7 @@ app.get("/scrape", function (req, res) {
     //   res.send(results);
 
   });
+
   //CREATE NEW ARTICLE
   // Create a new Article using the `result` object built from scraping
   db.Article.create(res)
@@ -97,8 +98,6 @@ app.get("/scrape", function (req, res) {
       res.json(err);
     });
 });
-
-
 
 // ROUTE FOR GETTING ALL ARTICLES FROM THE DB
 app.get("/articles", function (req, res) {
@@ -135,9 +134,9 @@ app.post("/articles/:id", function (req, res) {
       { $set: { note: dbNote.id } }
     ))
     .then(redditdb => res.json(redditdb))
-    // .catch(function (err) {
-    //   res.json(err);
-    // });
+  // .catch(function (err) {
+  //   res.json(err);
+  // });
 });
 
 // Listener

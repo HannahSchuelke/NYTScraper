@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Reddit Scraper</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="app.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Reddit Scraper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="/assets/js/app.js"></script>
 </head>
-  <div id="wrapper">
-    <h1>Reddit Scraper</h1>
-    <h2><i>Thoughts in WebDev from Everyday People Worldwide</i></h2>
-    <div id="articles">Articles</div>
-    <div id="notes">Notes</div>
-  </div>
-  <div class="container">
-    <!-- <a class="link" href="index.html">Home</a> -->
-    <button id="search">Search New Articles</button>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script>
-      function scrape() {
-        $.ajax('/scrape', {
-          type: 'GET',
-        })
-        .then(function(result) {
-          console.log(result)
-        })
-      }
-      $("#search").on('click', scrape());
-    </script>
-  <script src="../..public/assets/js/app.js"></script>
+<div id="wrapper">
+  <h1>Reddit Scraper</h1>
+  <h2><i>Thoughts in WebDev from Everyday People Worldwide</i></h2>
+  <div class="col-md-6"></div>
+  <div id="Articles">Articles</div>
+
+  <div class="col-md-6"></div>
+  <div id="notes">Notes</div>
+
+</div>
+<div class="container">
+  <!-- <a class="link" href="index.html">Home</a> -->
+  <button id="search">Search New Articles</button>
+</div>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+<script>
+  function scrape() {
+    $.ajax('/scrape', {
+      type: 'GET',
+    })
+      .then(function (result) {
+        console.log(result)
+      })
+  }
+  $("#search").on('click', scrape());
+</script>
+<script src="../..public/assets/js/app.js"></script>
 </body>
+
 </html>

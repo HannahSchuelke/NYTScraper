@@ -6,20 +6,20 @@ var Schema = mongoose.Schema;
 var ArticleSchema = new Schema({
   headline: {
     title: String,
-  summary: String,
-  imgUrl: String,
-  storyUrl: String,
-  saved: {
-    type: Boolean,
-    default: false
-  },
-  notes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Note"
-    }
-  ]
-}
+    summary: String,
+    imgUrl: String,
+    storyUrl: String,
+    saved: {
+      type: Boolean,
+      default: false
+    },
+    notes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Note"
+      }
+    ]
+  }
 });
 
 // This creates our model from the above schema, using mongoose's model method
