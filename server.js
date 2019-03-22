@@ -43,6 +43,12 @@ app.set('view engine', 'handlebars');
 // mongoose.connect();
 mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
 
+
+// /ROUTE
+app.get("/", function(req, res) {
+  res.send("index.html");
+}); 
+
 // ROUTES TO SCRAPE
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with axios

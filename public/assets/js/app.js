@@ -1,4 +1,3 @@
-
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
     // For each one
@@ -20,6 +19,11 @@ $.getJSON("/articles", function(data) {
       method: "GET",
       url: "/articles/" + thisId
     })
+    .done(function(data) {
+      location.reload();
+    });
+  
+
       // With that done, add the note information to the page
       .then(function(data) {
         console.log(data);
@@ -62,8 +66,8 @@ $.getJSON("/articles", function(data) {
       .then(function(data) {
         // Log the response
         console.log(data);
-        // Empty the notes section
-        $("#notes").empty();
+        // Empty the notes section (this is commented out as)
+        // $("#notes").empty();
       });
   
     // Also, remove the values entered in the input and textarea for note entry
