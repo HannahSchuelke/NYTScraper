@@ -5,6 +5,7 @@ var express = require("express");
 var morgan = require("morgan");
 var mongoose = require("mongoose");
 var expressHand = require("express-handlebars");
+var path = require ("path");
 // const dotenv = require('dotenv'); //!!!!
 require('dotenv').config();
 // Requiring Article model
@@ -31,7 +32,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Express view engine
+// Express view engine (don't know if I need this)
 app.engine('handlebars', expressHand({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
@@ -44,19 +45,22 @@ app.set('view engine', 'handlebars');
 mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
 
 
-// /ROUTE
+// /ROUTE (./ because we're in the same directory)
 app.get("/", function(req, res) {
-  res.send("index.html");
+  res.sendFile(__dirname + '/views/layouts/index.html');
+  
 }); 
 
 // ROUTES TO SCRAPE
 app.get("/scrape", function(req, res) {
+      // An empty array to save the data that we'll scrape
+      var results = [];
     // First, we grab the body of the html with axios
     axios.get("https://old.reddit.com/r/webdev/").then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
       var $ = cheerio.load(response.data);
       // An empty array to save the data that we'll scrape
-      var results = [];
+      // var results = [];
       // With cheerio, find each p-tag with the "title" class
       $("p.title").each(function(i, element) {
         // Save the text of the element in a "title" variable
@@ -73,6 +77,7 @@ app.get("/scrape", function(req, res) {
       // Log the results once you've looped through each of the elements found with cheerio
       console.log(results); //go to my node terminal server
     //   res.send(results);
+    
     });
   //CREATE NEW ARTICLE
     // Create a new Article using the `result` object built from scraping
@@ -87,6 +92,7 @@ app.get("/scrape", function(req, res) {
           });
     // Send a message to the client
       res.send("Scrape Complete");
+      // res.json(results);
       });
    
 
@@ -98,7 +104,7 @@ app.get("/scrape", function(req, res) {
     .then(Article => res.json(Article))
   });
   
-  // Route for grabbing a specific Article by id, populate it with it's note
+  // Route for grabbing a specific Article by id, populate it with its note
   app.get("/articles/:id", function(req, res) {
     // TODO
     // ====

@@ -22,7 +22,7 @@ $.getJSON("/articles", function(data) {
     .done(function(data) {
       location.reload();
     });
-  
+  })
 
       // With that done, add the note information to the page
       .then(function(data) {
@@ -44,7 +44,6 @@ $.getJSON("/articles", function(data) {
           $("#bodyinput").val(data.note.body);
         }
       });
-  });
   
   // When you click the savenote button
   $(document).on("click", "#savenote", function() {
