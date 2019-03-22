@@ -91,8 +91,8 @@ app.get("/scrape", function(req, res) {
             console.log(err);
           });
     // Send a message to the client
-      res.send("Scrape Complete");
-      // res.json(results);
+      // res.send("Scrape Complete");
+      res.json(results);
       });
    
 
