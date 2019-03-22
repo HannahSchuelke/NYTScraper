@@ -18,8 +18,8 @@ This is built using Node, Express, Mongo, Mongoose, Cheerio, Axios, and a MVC Pa
 7. Open up terminal and enter the `mongo` command
 8. Type "http://localhost:3000/" into the URL and you will be able to see my html.
 9.  In "http://localhost:3000/" you may press the button, and it will populate your command line with results.
-10. Go to "http://localhost:3000/scrape" into the URL and you will be able to see the scraping results in your terminal.
-11. 10. Go to "http://localhost:3000/articles" into the URL and you will be able to see the scraping results in your terminal.
+10. Go to "http://localhost:3000/scrape" into the URL and you will be able to see the scraping results in your webpage and terminal.
+11. 10. Go to "http://localhost:3000/articles" into the URL and you will be able to see the scraping results in your webpage and terminal.
 
 
 ## Repository on Github
