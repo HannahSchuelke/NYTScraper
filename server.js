@@ -53,14 +53,12 @@ app.get("/", function(req, res) {
 
 // ROUTES TO SCRAPE
 app.get("/scrape", function(req, res) {
-      // An empty array to save the data that we'll scrape
+      // An empty array to save the data that we'll scrape (now within scope)
       var results = [];
     // First, we grab the body of the html with axios
     axios.get("https://old.reddit.com/r/webdev/").then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
       var $ = cheerio.load(response.data);
-      // An empty array to save the data that we'll scrape
-      // var results = [];
       // With cheerio, find each p-tag with the "title" class
       $("p.title").each(function(i, element) {
         // Save the text of the element in a "title" variable
