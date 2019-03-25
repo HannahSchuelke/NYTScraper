@@ -34,15 +34,16 @@ app.use(express.json());
 
 // CONNECTION FOR MONGO DB !!! (format)
 // var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
-var MONGODB_URI = process.env.MONGODB_URI ||
-  // mongoose.connect();
-  mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI
+// mongoose.connect();
+mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true });
 
 
 // /ROUTES (./ because we're in the same directory)
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/layouts/index.html');
 });
+
 app.get("/saved", function (req, res) {
   res.sendFile(path.join(__dirname, "/views/layouts/saved.html"));
 });
@@ -91,13 +92,26 @@ app.get("/scrape", function (req, res) {
 
     // push the array of news objects into news database
     db.Article.insertMany(newsArr, { "ordered": false }).then(function (dbNews) {
-      res.json("Get " + amount + " news articles and " + amount + " different ones added!")
-    }).catch(function (err) {
-      let inserted = err.result.nInserted
-      let message = "Get " + amount + " news articles and " + inserted + " different ones added!"
-      res.json(message)
-      console.log(err)
+      let message = "Get " + amount + " news articles and " + amount + " different ones added!"
+      db.Article.find({})
+        .then(Articledb => {
+          let data = {
+            message: message,
+            Articledb : Articledb
+          }
+          res.json(data)
+        })
+        .catch(function (err) {
+          res.json(err);
+        });
     })
+    // .catch(function (err) {
+    //   // let inserted = err.result.nInserted
+    //   // let message = "Get " + amount + " news articles and " + inserted + " different ones added!"
+    //   // res.json(message)
+    //   // console.log(err)
+    //   res.json(err)
+    // })
 
   })
 
@@ -161,11 +175,11 @@ app.get("/scrape", function (req, res) {
 // ROUTE FOR GETTING ALL ARTICLES FROM THE DB
 app.get("/articles", function (req, res) {
   // TODO: Finish the route so it grabs all of the articles
-  db.Article.find({})
-    .then(Articledb => res.json(Articledb))
-    .catch(function (err) {
-      res.json(err);
-    });
+  // db.Article.find({})
+  //   .then(Articledb => res.json(Articledb))
+  //   .catch(function (err) {
+  //     res.json(err);
+  //   });
 });
 
 // Route for grabbing a specific Article by id, populate it with its note
