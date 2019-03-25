@@ -4,22 +4,24 @@ var Schema = mongoose.Schema;
 // Using the Schema constructor, create a new UserSchema object
 // This is similar to a Sequelize model
 var ArticleSchema = new Schema({
-  headline: {
-    title: String,
-    summary: String,
-    imgUrl: String,
-    storyUrl: String,
+  head: {
+    type: String,
+    unique: true,
+  },
+    sum: { 
+      type: String,
+    },
+    link: {
+      type: String,
+    },
     saved: {
       type: Boolean,
       default: false
     },
-    notes: [
-      {
+    notes: {
         type: Schema.Types.ObjectId,
         ref: "Note"
       }
-    ]
-  }
 });
 
 // This creates our model from the above schema, using mongoose's model method
