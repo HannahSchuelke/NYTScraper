@@ -124,12 +124,16 @@ app.get("/articles/:id", function (req, res) {
   // then responds with the article with the note included
   db.Article.findOne({ _id: req.params.id })
     .populate("note")
-    .then(Articledb => res.json(Articledb));
-})
+//     .then(Articledb => res.json(Articledb));
+// })
+    .then(function(Articledb) {
+      res.json(Articledb);
+    })
 // Error
     .catch(function (err) {
       res.json(err);
     });
+  });
 
   
 // Route for grabbing an article by ID
@@ -140,7 +144,7 @@ app.put("/articles/:id", function (req, res) {
   // then find an article from the req.params.id
   // and update it's "note" property with the _id of the new note
   db.Article.update({ _id: req.params.id}, {$set: {isSaved: true}})
-    .then(Articledb) 
+    .then(function(Articledb) { 
     res.json(Articledb);
   // .catch(function (err) {
   //   res.json(err);
@@ -177,7 +181,7 @@ app.delete("/articles/:id", function(req, res) {
   .catch(function(err) {
     res.json(err);
   });
-
+});
 
 // Listener
 app.listen(PORT, function () {
