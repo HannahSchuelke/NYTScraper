@@ -1,4 +1,4 @@
-$(document).ready(function () {
+// $(document).ready(function () {
 
   // Grab the articles as a json
   $.getJSON("/articles", function (data) {
@@ -7,7 +7,8 @@ $(document).ready(function () {
       // Display the apropos information on the page
       // $("#articles").append("col-md-6" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
       // $("#articles).append('col-md-6' + data[i]._id + data[i].title + "<br>" + data[i].link + </div>");
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      // $("#articles").append("<div data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</div>");
+      $("#articles").append("<results'" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</div>");
     };
   });
 
@@ -77,4 +78,4 @@ $(document).ready(function () {
     $("#titleinput").val("");
     $("#bodyinput").val("");
   });
-});
+// });

@@ -4,14 +4,9 @@ var axios = require("axios");
 var express = require("express");
 var morgan = require("morgan");
 var mongoose = require("mongoose");
-var expressHand = require("express-handlebars");
 var path = require("path");
 // const dotenv = require('dotenv'); //!!!!
 require('dotenv').config();
-// Requiring Article model
-var Article = require('./models');
-// Requiring the `User` model for accessing the `users` collection
-// var Note = require("./models"); //!!!
 var db = require("./models");
 
 // Sets up the Express App & link middleware
@@ -20,7 +15,6 @@ app.use(morgan('combined'))
 var PORT = process.env.PORT || 3000;
 
 // CONFIGURE MIDDLEWARE
-// Use morgan logger for logging requests
 app.use(morgan("dev"));
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
@@ -33,8 +27,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Express view engine (don't know if I need this)
-app.engine('handlebars', expressHand({ defaultLayout: 'main' }));
-app.set('view engine', 'handlebars');
+// app.engine('handlebars', expressHand({ defaultLayout: 'main' }));
+// app.set('view engine', 'handlebars');
 
 
 
@@ -45,10 +39,12 @@ var MONGODB_URI = process.env.MONGODB_URI ||
 mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
 
 
-// /ROUTE (./ because we're in the same directory)
+// /ROUTES (./ because we're in the same directory)
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/layouts/index.html');
-
+});
+app.get("/saved", function(req, res) {
+  res.sendFile(path.join(__dirname, "/views/layouts/saved.html"));
 });
 
 // ROUTES TO SCRAPE
@@ -60,9 +56,11 @@ app.get("/scrape", function (req, res) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
     // With cheerio, find each p-tag with the "title" class
-    $("p.title").each(function (i, element) {
+      var incrementor = 0;
+    $("article").each(function (i, element) {
       // Save the text of the element in a "title" variable
       var title = $(element).text();
+      // var story = $(element).text();
       // In the currently selected element, look at its child elements (i.e., its a-tags),
       // then save the values for any "href" attributes that the child elements may have
       var link = $(element).children().attr("href");
@@ -71,17 +69,18 @@ app.get("/scrape", function (req, res) {
         title: title,
         link: link
       });
-    });
+      if (title && link) { 
+    
     // Log the results once you've looped through each of the elements found with cheerio
     console.log(results); //go to my node terminal server
     //   res.send(results);
 
-  });
-
   //CREATE NEW ARTICLE
   // Create a new Article using the `result` object built from scraping
-  db.Article.create(res)
+  db.Article.create(results)
     .then(function (redditdb) {
+      incrementor++;
+      console.log(incrementor + "new scrape added ");
       //         // View the added result in the console
       //         console.log(redditdb);
       //       })
@@ -92,12 +91,19 @@ app.get("/scrape", function (req, res) {
       // // Send a message to the client
       //   res.json(results);
       //   });
+      
       res.json(redditdb);
     })
     .catch(function (err) {
       res.json(err);
+    
     });
-});
+  }});
+// redirect to client
+  res.sendFile(path.join(__dirname, '/views/layouts/index.html'));
+    });
+  });
+
 
 // ROUTE FOR GETTING ALL ARTICLES FROM THE DB
 app.get("/articles", function (req, res) {
@@ -118,8 +124,13 @@ app.get("/articles/:id", function (req, res) {
   // then responds with the article with the note included
   db.Article.findOne({ _id: req.params.id })
     .populate("note")
-    .then(Article => res.json(Article))
-});
+    .then(Article => res.json(Article));
+})
+    .catch(function (err) {
+      res.json(err);
+    });
+
+    
 
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function (req, res) {
