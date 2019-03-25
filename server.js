@@ -78,7 +78,7 @@ app.get("/scrape", function (req, res) {
   //CREATE NEW ARTICLE
   // Create a new Article using the `result` object built from scraping
   db.Article.create(results)
-    .then(function (redditdb) {
+    .then(function (Articledb) {
       incrementor++;
       console.log(incrementor + "new scrape added ");
       //         // View the added result in the console
@@ -92,7 +92,7 @@ app.get("/scrape", function (req, res) {
       //   res.json(results);
       //   });
       
-      res.json(redditdb);
+      res.json(Articledb);
     })
     .catch(function (err) {
       res.json(err);
@@ -109,7 +109,7 @@ app.get("/scrape", function (req, res) {
 app.get("/articles", function (req, res) {
   // TODO: Finish the route so it grabs all of the articles
   db.Article.find({})
-    .then(Article => res.json(Article))
+    .then(Articledb => res.json(Articledb))
     .catch(function (err) {
       res.json(err);
     });
@@ -124,12 +124,31 @@ app.get("/articles/:id", function (req, res) {
   // then responds with the article with the note included
   db.Article.findOne({ _id: req.params.id })
     .populate("note")
-    .then(Article => res.json(Article));
+    .then(Articledb => res.json(Articledb));
 })
+// Error
     .catch(function (err) {
       res.json(err);
     });
 
+  
+// Route for grabbing an article by ID
+app.put("/articles/:id", function (req, res) {
+  // TODO
+  // ====
+  // save the new note that gets posted to the Notes collection
+  // then find an article from the req.params.id
+  // and update it's "note" property with the _id of the new note
+  db.Article.update({ _id: req.params.id}, {$set: {isSaved: true}})
+    .then(Articledb) 
+    res.json(Articledb);
+  // .catch(function (err) {
+  //   res.json(err);
+  // });
+})
+.catch(function (err) {
+  res.json(err);
+});
     
 
 // Route for saving/updating an Article's associated Note
@@ -139,16 +158,26 @@ app.post("/articles/:id", function (req, res) {
   // save the new note that gets posted to the Notes collection
   // then find an article from the req.params.id
   // and update it's "note" property with the _id of the new note
-  Note.create(req.body)
-    .then(dbNote => db.Article.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: { note: dbNote.id } }
-    ))
-    .then(redditdb => res.json(redditdb))
+  db.Note.create(req.body)
+    .then(dbNote => db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote.id }, { new: true })); 
+     })
+    .then(Articledb => res.json(Articledb))
   // .catch(function (err) {
   //   res.json(err);
   // });
+  .catch(function(err) {
+    res.json(err);
 });
+
+// Deleting an article
+app.delete("/articles/:id", function(req, res) {
+  db.Article.remove({ _id: req.params.id})
+  .then(Articledb => res.json(Articledb))
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+
 
 // Listener
 app.listen(PORT, function () {
