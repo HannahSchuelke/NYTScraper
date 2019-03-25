@@ -33,10 +33,10 @@ app.use(express.json());
 
 
 // CONNECTION FOR MONGO DB !!! (format)
-// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/redditdb";
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
 var MONGODB_URI = process.env.MONGODB_URI ||
   // mongoose.connect();
-  mongoose.connect("mongodb://localhost/redditdb", { useNewUrlParser: true });
+  mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true });
 
 
 // /ROUTES (./ because we're in the same directory)
@@ -135,7 +135,7 @@ app.get("/scrape", function (req, res) {
 //       incrementor++;
 //       console.log(incrementor + "new scrape added ");
 //       //         // View the added result in the console
-//       //         console.log(redditdb);
+//       //         console.log(newsdb);
 //       //       })
 //       //       .catch(function(err) {
 //       //         // If an error occurred, log it
