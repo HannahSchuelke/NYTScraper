@@ -78,4 +78,17 @@
     $("#titleinput").val("");
     $("#bodyinput").val("");
   });
-// });
+
+// TRIGGER SEARCH BUTTON REQUEST
+$(document).on("click", "#search", function () {
+  // CLIENT-SIDE CALLING THIS WOULD GO IN APP.JS{
+    $.ajax({
+      url: '/scrape',
+      type: 'GET',
+    })
+      .then(function (results) {
+        console.log(results)
+        // APPEND RESULTS RIGHT HERE
+      })
+  });
+
