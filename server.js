@@ -150,9 +150,9 @@ app.get("/notes/:id", function (req, res) {
 });
 
 // LISTENER
-app.listen(PORT, function () {
-  console.log("App listening on PORT " + PORT);
-});
+// app.listen(PORT, function () {
+//   console.log("App listening on PORT " + PORT);
+// });
 
 // LISTENER TO GET MONGOOSE TO CONNECT TO HEROKU
 app.listen(process.env.PORT || 3000, function(){
