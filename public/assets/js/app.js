@@ -8,57 +8,36 @@ $.getJSON("/articles", function (data) {
 
 // CLICKING THE NOTE BUTTON
 $(document).on("click", ".note", function () {
-  // Empty the note section (this is commented out as)
-  
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
   console.log(thisId)
   updateNotesDiv(thisId)
 });
-
-
-const updateNotesDiv = function(thisId){
+const updateNotesDiv = function (thisId) {
   // empty
 
-  if(thisId){
-  $("#savedNote").empty();
+  if (thisId) {
+    $("#savedNote").empty();
 
-  // GET REQUEST TO CHANGE THE NOTE, WHEN NOTE ARE ENTERED
-  $.ajax({
-    method: "GET",
-    url: "/notes/" + thisId,
-    // data: {
-    // Value taken from title input
-    // title: $("#titleinput").val(),
-    // Value taken from note textarea
-    // body: $("#bodyinput").val()
-    // }
-  })
-    // With that done
-    .then(function (data) {
-      // Log the response
-      console.log(data);
-      // Empty the note section (this is commented out as)
-      // $("#note").empty();
-
-      // for loop
-      if(data){
-        for (let i in data) {
-          $("#savedNote").append("<h5>" + data[i].title + "</h5>");
-          $("#savedNote").append("<h5>" + data[i].body + "</h5>");
+    // GET REQUEST TO CHANGE THE NOTE, WHEN NOTE ARE ENTERED
+    $.ajax({
+      method: "GET",
+      url: "/notes/" + thisId,
+    })
+      .then(function (data) {
+        // Log response
+        console.log(data);
+        // for loop
+        if (data) {
+          for (let i in data) {
+            $("#savedNote").append("<h5>" + data[i].title + "</h5>");
+            $("#savedNote").append("<h5>" + data[i].body + "</h5>");
+          }
         }
-      }
-
-      $("#savedNote").append("<input id='titleinput' name='title' placeholder='Please enter the title'></input>"+
-      "<textarea id='bodyinput' name='body' placeholder='Please enter the notes'></textarea>"+
-      "<button data-id='" + thisId + "' id='submit'>Submit</button>");
-
-      // if there's a note for the article
-      // if (data.note) {
-      //   // Place the body of the note in the body textarea
-      //   $("#bodyinput").val(data.note.body);
-      // }
-    });
+        $("#savedNote").append("<input id='titleinput' name='title' placeholder='Please enter the title'></input>" +
+          "<textarea id='bodyinput' name='body' placeholder='Please enter the notes'></textarea>" +
+          "<button data-id='" + thisId + "' id='submit'>Submit</button>");
+      });
   }
 }
 
@@ -82,12 +61,11 @@ $(document).on("click", "#submit", function () {
     .then(function (data) {
       console.log(data);
     });
-  // Remove values entered in the input/textarea for note 
+  // Remove values entered in the input/textarea for note & call update notes
   $("#titleinput").val("");
   $("#bodyinput").val("");
   updateNotesDiv(thisId)
 });
-
 
 // TRIGGER SEARCH SCRAPE BUTTON REQUEST
 $(document).on("click", "#search", function () {

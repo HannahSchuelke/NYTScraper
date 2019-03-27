@@ -1,16 +1,22 @@
-# Reddit Scraper
+# NYT Scraper
 
-I've created a web app that lets users view the latest Reddit news via scraping. But you're not going to actually write any articles; instead, you'll flex your Mongoose and Cheerio muscles to scrape news from another site.
+I've created a web app that lets users view the latest New York Times news via scraping. You may also add notes to articles, viewable at the bottom of the webpage.
 
 This is built using Node, Express, Mongo, Mongoose, Cheerio, Axios, and a MVC Paradigm; for assignment 13 of UMN's Coding Bootcamp. 
 
 ![](public/img/homePage.png)
 
+### How to use on Heroku
+1. Go to https://nyt--scraper.herokuapp.com/.
+2. Click the `Search New Articles` button and your screen will populate after you recieve an alert of the scrape. 
+3. View the articles by clicking on the title. 
+4. Add a note by clicking the `note` button below the article and inputing this on the buttom of the webpage. 
+5. Reference your notes at the bottom of the webpage. Clicking the note button again will show additional notes at the bottom of the page.
 
 ### How to use locally
 
 1. Direct or `cd` yourself in terminal to a root folder where you'd like to test our project. 
-2. Go to https://github.com/HannahSchuelke/redditScraper and clone the repository, or type `git clone git@github.com:HannahSchuelke/redditScraper.git` into that same root folder.  
+2. Go to https://github.com/HannahSchuelke/redditScraper and clone the repository, or type `git clone https://github.com/HannahSchuelke/NYTScraper.git` into that same root folder.  
 3. Type `npm install` also into your terminal from the same folder. 
 4. Type `node server.js` into your terminal to start the server.
 5. Download Mongo at https://www.mongodb.com/download-center.
@@ -24,15 +30,15 @@ This is built using Node, Express, Mongo, Mongoose, Cheerio, Axios, and a MVC Pa
 
 ## Repository on Github
 
-https://github.com/HannahSchuelke/redditScraper
+https://github.com/HannahSchuelke/NYTScraper
 
 ## Deployment on Github
 
-https://hannahschuelke.github.io/redditScraper/
+https://hannahschuelke.github.io/NYTScraper/
 
 ## Deployment on Heroku
 
-https://reddit---scraper.herokuapp.com/
+https://nyt--scraper.herokuapp.com/
 
 ## Built With
 

@@ -4,8 +4,7 @@ var axios = require("axios");
 var express = require("express");
 var morgan = require("morgan");
 var mongoose = require("mongoose");
-var path = require("path");
-// const dotenv = require('dotenv'); //!!!!
+// var path = require("path");
 require('dotenv').config();
 var db = require("./models");
 
@@ -52,21 +51,17 @@ app.get("/scrape", function (req, res) {
       // source = source.toUpperCase()
       var headline = $(element).find("h2").text()
       var link = $(element).find("a").attr("href")
-      // var photo = $(element).find("img").attr("src")
       var summary = $(element).find("p").text()
-      // var date = link.slice(1, 11)
       var n = summary.search(".By")
-      // var reporter = summary.slice(n + 4)
       summary = summary.slice(0, n + 1)
 
-      // Save these results in an object that we'll push into the results array we defined earlier
+      // SAVE RESULTS INTO OBJEXT THAT WILL BE PUSHED INTO AN ARRAY
       var news = {
         // source: "NEW YORK TIMES " + source,
         headline: headline,
         link: "https://www.nytimes.com" + link,
         summary: summary,
       };
-
       // push a specific piece of news into an Array
       newsArr.push(news)
     })
@@ -81,7 +76,7 @@ app.get("/scrape", function (req, res) {
         .then(Articledb => {
           let data = {
             message: message,
-            Articledb : Articledb
+            Articledb: Articledb
           }
           res.json(data)
         })
@@ -109,7 +104,6 @@ app.get("/articles/:id", function (req, res) {
     });
 });
 
-
 // ROUTE FOR GRABBING AN ARTICLE BY ID
 app.put("/articles/:id", function (req, res) {
   db.Article.update({ _id: req.params.id }, { $set: { isSaved: true } })
@@ -120,9 +114,6 @@ app.put("/articles/:id", function (req, res) {
       res.json(err);
     });
 
-
-  
-  
   // DELETING AN ARTICLE
   app.delete("/articles/:id", function (req, res) {
     db.Article.remove({ _id: req.params.id })
@@ -133,18 +124,16 @@ app.put("/articles/:id", function (req, res) {
     });
 });
 
-
 // ROUTE FOR SAVING/UPDATING AN ARTICLES NOTE
 app.post("/articles/:id", function (req, res) {
   db.Note.create(req.body)
-    .then(dbNote => db.Article.findOneAndUpdate({ _id: req.params.id }, {$set:{ saved: true }}, { new: true }))
+    .then(dbNote => db.Article.findOneAndUpdate({ _id: req.params.id }, { $set: { saved: true } }, { new: true }))
     .then(Articledb => res.json(Articledb))
     .catch(function (err) {
       res.json(err);
     });
-
 })
-  
+
 // ROUTE FOR GETTING ALL NOTES FROM THE DB
 app.get("/notes/:id", function (req, res) {
   db.Note.find({ newsId: req.params.id })
@@ -158,8 +147,7 @@ app.get("/notes/:id", function (req, res) {
     });
 });
 
-
-  // LISTENER
+// LISTENER
 app.listen(PORT, function () {
   console.log("App listening on PORT " + PORT);
 });
