@@ -25,11 +25,13 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// CONNECTION FOR MONGO DB !!! (format)
+// CONNECTION FOR MONGO DB (local format)
 // var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
-var MONGODB_URI = process.env.MONGODB_URI
-// mongoose.connect();
-mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true });
+// mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true });
+
+// CONNECTION FOR MONGO DB (heroku format)
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
+mongoose.connect(MONGODB_URI);
 
 
 // /ROUTES (./ because we're in the same directory)
@@ -150,4 +152,9 @@ app.get("/notes/:id", function (req, res) {
 // LISTENER
 app.listen(PORT, function () {
   console.log("App listening on PORT " + PORT);
+});
+
+// LISTENER TO GET MONGOOSE TO CONNECT TO HEROKU
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
