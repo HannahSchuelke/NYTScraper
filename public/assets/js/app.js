@@ -1,3 +1,4 @@
+$(document).ready(function() {
 // GRAB ARTICLES AS JSON
 $.getJSON("/articles", function (data) {
   // For each one
@@ -90,4 +91,5 @@ $(document).on("click", "#search", function () {
         $("#newsResults").append(newsDiv)
       }
     })
+})
 })
