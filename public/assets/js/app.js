@@ -1,84 +1,96 @@
-// $(document).ready(function () {
-
-// Grab the articles as a json
+// GRAB ARTICLES AS JSON
 $.getJSON("/articles", function (data) {
   // For each one
   for (var i = 0; i < data.length; i++) {
-    // Display the apropos information on the page
-    // $("#articles").append("col-md-6" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-    // $("#articles).append('col-md-6' + data[i]._id + data[i].title + "<br>" + data[i].link + </div>");
-    // $("#articles").append("<div data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</div>");
     $("#articles").append("<results'" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</div>");
   };
 });
 
-// Whenever someone clicks a div tag
-// $(document).on("click", "div", function () {
-//   // Empty the notes from the note section
-//   // $("#notes").empty();
-//   // Save the id from the p tag
-//   var thisId = $(this).attr("data-id");
-
-//   // Now make an ajax call for the Article
-//   $.ajax({
-//     method: "GET",
-//     url: "/articles/" + thisId
-//   })
-//   // With that done, add the note information to the page
-//   .then(function (data) {
-//     console.log(data);
-//     // The title of the article
-//     $("#notes").append("<div>" + data.title + "</div>");
-//     // An input to enter a new title
-//     $("#notes").append("<input id='titleinput' name='title' >");
-//     // A textarea to add a new note body
-//     $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-//     // A button to submit a new note, with the id of the article saved to it
-//     $("#notes").append("<button>'" + data._id + "</button>");
-
-//     // If there's a note in the article
-//     if (data.note) {
-//       // Place the title of the note in the title input
-//       $("#titleinput").val(data.note.title);
-//       // Place the body of the note in the body textarea
-//       $("#bodyinput").val(data.note.body);
-//     }
-//   });
-// })
-
-
-// When you click the savenote button
-$(document).on("click", "#savenote", function () {
+// CLICKING THE NOTE BUTTON
+$(document).on("click", ".note", function () {
+  // Empty the note section (this is commented out as)
+  
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
+  console.log(thisId)
+  updateNotesDiv(thisId)
+});
 
-  // Run a POST request to change the note, using what's entered in the inputs
+
+const updateNotesDiv = function(thisId){
+  // empty
+
+  if(thisId){
+  $("#savedNote").empty();
+
+  // GET REQUEST TO CHANGE THE NOTE, WHEN NOTE ARE ENTERED
   $.ajax({
-    method: "POST",
-    url: "/articles/" + thisId,
-    data: {
-      // Value taken from title input
-      title: $("#titleinput").val(),
-      // Value taken from note textarea
-      body: $("#bodyinput").val()
-    }
+    method: "GET",
+    url: "/notes/" + thisId,
+    // data: {
+    // Value taken from title input
+    // title: $("#titleinput").val(),
+    // Value taken from note textarea
+    // body: $("#bodyinput").val()
+    // }
   })
     // With that done
     .then(function (data) {
       // Log the response
       console.log(data);
-      // Empty the notes section (this is commented out as)
-      // $("#notes").empty();
-    });
+      // Empty the note section (this is commented out as)
+      // $("#note").empty();
 
-  // Also, remove the values entered in the input and textarea for note entry
+      // for loop
+      if(data){
+        for (let i in data) {
+          $("#savedNote").append("<h5>" + data[i].title + "</h5>");
+          $("#savedNote").append("<h5>" + data[i].body + "</h5>");
+        }
+      }
+
+      $("#savedNote").append("<input id='titleinput' name='title' placeholder='Please enter the title'></input>"+
+      "<textarea id='bodyinput' name='body' placeholder='Please enter the notes'></textarea>"+
+      "<button data-id='" + thisId + "' id='submit'>Submit</button>");
+
+      // if there's a note for the article
+      // if (data.note) {
+      //   // Place the body of the note in the body textarea
+      //   $("#bodyinput").val(data.note.body);
+      // }
+    });
+  }
+}
+
+// CLICKING SAVE NOTE BUTTON
+$(document).on("click", "#submit", function () {
+  // Grab the id/article from the button
+  var thisId = $(this).attr("data-id");
+  console.log(thisId);
+
+  // RUN POST REQUEST TO CHANGE THE NOTE
+  $.ajax({
+    method: "POST",
+    url: "/articles/" + thisId,
+    data: {
+      // Value from note area
+      title: $("#titleinput").val(),
+      body: $("#bodyinput").val(),
+      newsId: thisId
+    }
+  })
+    .then(function (data) {
+      console.log(data);
+    });
+  // Remove values entered in the input/textarea for note 
   $("#titleinput").val("");
   $("#bodyinput").val("");
+  updateNotesDiv(thisId)
 });
 
-// TRIGGER SEARCH BUTTON REQUEST
+
+// TRIGGER SEARCH SCRAPE BUTTON REQUEST
 $(document).on("click", "#search", function () {
-  // CLIENT-SIDE CALLING THIS WOULD GO IN APP.JS{
   $.ajax({
     url: '/scrape',
     type: 'GET',
@@ -87,17 +99,17 @@ $(document).on("click", "#search", function () {
       console.log(results)
       alert(results.message)
       console.log(results.Articledb)
-      // APPEND RESULTS RIGHT HERE
+      // appending results here
       for (let i in results.Articledb) {
-          let headline = results.Articledb[i].headline
-          let link = results.Articledb[i].link
-          let summary = results.Articledb[i].summary
-          let newsDiv = `
-          <a href='`+ link +`'><div>`+headline + `</div></a>
-          <div>`+summary + `</div>
+        let headline = results.Articledb[i].headline
+        let link = results.Articledb[i].link
+        let summary = results.Articledb[i].summary
+        let id = results.Articledb[i]._id
+        let newsDiv = `
+          <a href='`+ link + `'><div>` + headline + `</div></a>` + `<button class="note" data-id="` + id + `">note</button>
+          <div>`+ summary + `</div>
           `
-          $("#newsResults").append(newsDiv)
+        $("#newsResults").append(newsDiv)
       }
     })
-});
-
+})
