@@ -87,7 +87,7 @@ app.get("/scrape", function (req, res) {
         });
     })
     .catch( err => {
-      console.log(err)
+      console.log("error", err)
     })
   })
 });
