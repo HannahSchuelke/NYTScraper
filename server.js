@@ -91,6 +91,7 @@ app.get("/scrape", function (req, res) {
 
 // ROUTE FOR GETTING ALL ARTICLES FROM THE DB
 app.get("/articles", function (req, res) {
+  res.sendStatus(200)
 });
 
 // ROUTE FOR GRABBING AN ARTICLE BY ID AND POPULATE IT WITH ITS NOTE
