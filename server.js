@@ -43,6 +43,10 @@ app.get("/", function (req, res) {
 app.get("/scrape", function (req, res) {
   // An empty array to save the data that we'll scrape (moved up to be within scope)
   var results = [];
+
+
+  // remove ({}) .then 
+  db.Article.remove({}).then(data => {
   // First, we grab the body of the html with axios
   axios.get("https://www.nytimes.com/section/world").then(function (response) {
     console.log("scrape start ===============================")
@@ -90,6 +94,7 @@ app.get("/scrape", function (req, res) {
       console.log("error", err.writeErrors[0])
     })
   })
+})
 });
 
 // ROUTE FOR GETTING ALL ARTICLES FROM THE DB
